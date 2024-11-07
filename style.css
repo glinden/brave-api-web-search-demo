@@ -1,0 +1,121 @@
+/* ht, MasaKudamatsu, for some of this CSS */
+/* setting the color palette */
+html {
+    --dark-gray: rgb(30, 30, 30);
+    --light-gray: rgb(100, 100, 100);
+    --focus-color: rgb(180, 130, 230);
+}
+
+.searchbox {
+  --target-size: 48px; /* https://web.dev/accessible-tap-targets/ */
+  --box-height: var(--target-size);
+  --border-radius: calc(var(--box-height) / 2);
+  --border-width: 3px;
+  --side-margin: calc(var(--border-radius) / 2);
+}
+
+/* shaping the box */
+.searchbox {
+  height: var(--box-height);
+  max-width: 561px; /* to follow the search box of google.com */
+}
+.searchbox input[type="search"] {
+  border: var(--border-width) solid var(--dark-gray);
+  border-radius: var(--border-radius);
+  height: 100%;
+  width: 100%;
+}
+
+/* Styling each component */
+.searchbox input[type="search"] {
+  -webkit-appearance: none; /* to prevent Safari from ignoring font-size */
+  color: var(--dark-gray); 
+  font-family: Verdana, sans-serif;
+  font-size: 1rem;
+}
+.searchbox input[type="search"]::placeholder {
+  color: var(--light-gray);
+  opacity: 1; /* to override the default of Firefox */
+}
+
+  /* positioning inner elements */
+.searchbox {
+  position: relative;
+}
+.searchbox input[type="search"] {
+  padding-left: calc( var(--side-margin) + 1em);
+  padding-right: var(--side-margin);
+  background: transparent;
+}
+
+/* Styling focus state */
+.searchbox input[type="search"]:focus {
+  border-color: var(--focus-color);
+  box-shadow: 0px 0px 6px var(--focus-color);
+  outline: 2px solid transparent; /* fallback for forced color modes; see https://www.sarasoueidan.com/blog/focus-indicators/#tips-for-styling-focus-indicators */
+  /* it also removes the default focus ring imposed by browsers */
+}
+
+/* Positioning the search box */
+body .searchbox {
+  width: 90%;
+  margin: 0 auto;
+  top: 60px;
+}
+
+.results {
+  width: 90%;
+  margin: 0 auto;
+  font-family: Verdana, sans-serif;
+  top:60px;
+  position: relative;
+}
+
+.result {
+  margin-top: 0.5em;
+}
+.result-anchor {
+  text-decoration: none;
+}
+.result-title {
+}
+.result-url {
+  margin-top: 1pt;
+  font-size: 0.8em;
+  font-style: italic;
+  opacity: 80%;
+}
+.result-snippet {
+  margin-top: 1pt;
+  font-size: 0.8em;
+}
+
+
+/* HT Zongbin, for the spinning dots, from https://codepen.io/nzbin/pen/GGrXbp */
+.dot-carousel {
+  position: relative;
+  left: -9999px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  box-shadow: 9984px 0 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+  animation: dot-carousel 1.5s infinite linear;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  visibility: hidden;
+}
+
+@keyframes dot-carousel {
+  0% {
+    box-shadow: 9984px 0 0 -1px #9880ff, 9999px 0 0 1px #9880ff, 10014px 0 0 -1px #9880ff;
+  }
+  50% {
+    box-shadow: 10014px 0 0 -1px #9880ff, 9984px 0 0 -1px #9880ff, 9999px 0 0 1px #9880ff;
+  }
+  100% {
+    box-shadow: 9999px 0 0 1px #9880ff, 10014px 0 0 -1px #9880ff, 9984px 0 0 -1px #9880ff;
+  }
+}
