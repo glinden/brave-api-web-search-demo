@@ -14,21 +14,18 @@ function displaySearchResults(data) {
     // For debugging, just display JSON
     // document.getElementById('results').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
 
-    if (!data || !data.webPages || !data.webPages.value) { 
+    if (!data || !data.web || !data.web.results) { 
         // Nothing! This doesn't happen very often. When it does, give the option of going to Google instead.
         document.getElementById('results').innerHTML = 'Sorry, there are no results for that query.';
-        addGoogleLinks(data.queryContext.originalQuery);
         return;
     }
 
-    let webPages = data.webPages.value;
+    let webPages = data.web.results;
 
     // Splice to top eight, then iterate through creating result divs with title, display URL, snippet
     const topResults = webPages.toSpliced(8);
     const allResultsDiv = document.getElementById("results");
-    topResults.forEach((page, pageIndex) => {
-        if (page.malware) { return; /* aka continue */ }
-        
+    topResults.forEach((page, pageIndex) => {        
         // Create a clickable div to put this result in
         const anchor = document.createElement("a");
         anchor.classList.add("result-anchor");
@@ -40,18 +37,18 @@ function displaySearchResults(data) {
         // Now add three divs to the result div, one each for the title, display url, and snippet
         const resultTitleDiv = document.createElement("div");
         resultTitleDiv.classList.add("result-title");
-        resultTitleDiv.innerText = page.name;
+        resultTitleDiv.innerText = page.title;
         resultDiv.appendChild(resultTitleDiv);
-        if (page.displayUrl) {
+        if (page.url) {
             const resultUrlDiv = document.createElement("div");
             resultUrlDiv.classList.add("result-url");
-            resultUrlDiv.innerText = page.displayUrl;
+            resultUrlDiv.innerText = page.url;
             resultDiv.appendChild(resultUrlDiv);
         }
-        if (page.snippet) {
+        if (page.description) {
             const resultSnippetDiv = document.createElement("div");
             resultSnippetDiv.classList.add("result-snippet");
-            resultSnippetDiv.innerText = page.snippet;
+            resultSnippetDiv.innerText = page.description;
             resultDiv.appendChild(resultSnippetDiv);
         }
         
@@ -143,11 +140,12 @@ window.addEventListener('load', function() {
 });
 
 
-// Bing API wants the location if possible for more relevant results, so go get it if we can
+// Brave API wants the location if possible for more relevant results, so go get it if we can
 function geolocate_success(position) {
     const coords = position.coords;
     const additional_location_header = {
-        'x-search-location': `lat:${coords.latitude};long:${coords.longitude};re:${coords.accuracy}`
+	    'X-Loc-Lat': coords.latitude,
+	    'X-Loc-Long': coords.longitude,
     };
     Object.assign(headers, additional_location_header);
     // console.log(headers);
