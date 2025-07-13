@@ -48,7 +48,7 @@ function displaySearchResults(data) {
         if (page.description) {
             const resultSnippetDiv = document.createElement("div");
             resultSnippetDiv.classList.add("result-snippet");
-            resultSnippetDiv.innerText = page.description;
+            resultSnippetDiv.innerHtml = page.description;
             resultDiv.appendChild(resultSnippetDiv);
         }
         
